@@ -1,4 +1,13 @@
+import logging
 from datetime import date
+
+
+def get_root_logger(name, numeric_level):
+  logging.basicConfig(format='  %(asctime)s [%(filename)s] %(message)s', level=numeric_level)
+  logger = logging.getLogger(name)
+  logger.info("Logging level %s",  logging.getLevelName(numeric_level))
+
+  return logger
 
 
 def calc_years(date1, date2):

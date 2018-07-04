@@ -1,6 +1,8 @@
 import csv
 import os
 import json
+import logging
+import argparse
 
 import lib
 from objs.event import new_event, Event
@@ -29,6 +31,7 @@ def gen_patients():
       if patient:
         patients[row[0]] = patient
 
+  logger.info("Loaded patients data")
 
   with open(EVENT_DATA, 'rb') as f:
     reader = csv.reader(f, delimiter="|")
@@ -40,6 +43,8 @@ def gen_patients():
       
       if event and p_id in patients:
         patients[p_id].add_event(event)
+
+  logger.info("Loaded events data")
 
   return patients
 
@@ -73,6 +78,8 @@ def extract(patients):
       with open(outfile, "wb") as f:
         f.write(patient.to_json())
 
+  logger.info("Generated Patient JSON files in results folder")
+
   min_timeline, max_timeline, median_timeline = lib.calc_aggs(timelines)
   min_age, max_age, median_age = lib.calc_aggs(ages)
 
@@ -87,10 +94,18 @@ def extract(patients):
   with open(outfile, "wb") as f: 
     f.write(json.dumps(stats, indent=4, sort_keys=True))
 
+  logger.info("Wrote statistics to results/stats.json")
 
 """
 #  Main
 """
 if __name__ == "__main__":
+  parser = argparse.ArgumentParser(description='Parsing arguments')
+  parser.add_argument("-v", "--verbose", help="increase output verbosity",action="store_true")
+  args = parser.parse_args()
+
+  numeric_level = logging.DEBUG if args.verbose else logging.INFO
+  logger = lib.get_root_logger(__name__, numeric_level)
+  
   setup()
   extract(gen_patients())
