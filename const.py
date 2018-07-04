@@ -16,3 +16,9 @@ PATIENT_ROW_LENGH = 3
 
 MAX_DATE = datetime.strptime("9999-12-31", '%Y-%m-%d')
 MIN_DATE = datetime.strptime("0001-01-01", '%Y-%m-%d')
+
+DATA_DIR = "data/"
+RESULTS_DIR = "results/"
+
+EVENT_DATA = DATA_DIR + "events.psv"
+PATIENT_DATA = DATA_DIR + "demo.psv"
