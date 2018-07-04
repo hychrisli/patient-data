@@ -10,6 +10,8 @@ from const import *
 #  Events
 """
 uniq_events = set()
+patients_with_events = set()
+
 event_stats = {
   "rows": 0,
   "uniq_events": 0,
@@ -58,6 +60,7 @@ with open('data/events.psv', 'rb') as f:
     else:
       uniq_events.add(key)
 
+    patients_with_events.add(row[IDX_ID].strip().lower())
     event_stats["versions"].add(row[IDX_VERSION])
 
     try: 
@@ -129,4 +132,11 @@ with open('data/demo.psv', 'rb') as f:
       patient_stats["wrong_birth_date"] += 1
 
 patient_stats["uniq_patients"] = len(uniq_patients)
-print ("patient stats: %r" % patient_stats)
+
+print "patient stats: %r" % patient_stats
+
+patients_with_no_events = len(uniq_patients.difference(patients_with_events))
+
+print "patients with no events: %d" % patients_with_no_events
+print "valid patients: %d" % (patient_stats["uniq_patients"] - patients_with_no_events)
+print "events with no patients: %d" % len(patients_with_events.difference(uniq_patients))
