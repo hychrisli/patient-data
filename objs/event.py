@@ -1,17 +1,7 @@
 import logging
 import json
 from datetime import datetime
-
-
-"""
-# constants 
-"""
-IDX_DATE = 1
-IDX_VERSION = 2
-IDX_CODE = 3
-ROW_LENGH = 4
-SYSTEM_9 = "http://hl7.org/fhir/sid/icd-9-cm"
-SYSTEM_10 = "http://hl7.org/fhir/sid/icd-10"
+from const import IDX_DATE, IDX_VERSION, IDX_CODE, EVENT_ROW_LENGH, SYSTEM_9, SYSTEM_10
 
 
 """
@@ -42,7 +32,7 @@ class Event:
 """
 def new_event(row):
 
-  if not row or len(row) < ROW_LENGH:
+  if not row or len(row) < EVENT_ROW_LENGH:
     logging.debug("[NEW_EVENT] Input None or missing values: %r", row)
     return None
 

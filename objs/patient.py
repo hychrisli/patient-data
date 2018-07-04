@@ -3,16 +3,7 @@ import logging
 from datetime import datetime
 from event import Event
 from lib import calc_years
-
-
-"""
-# Constants
-"""
-IDX_BIRTH = 1
-IDX_GENDER = 2
-ROW_LENGH = 3
-MAX_DATE = datetime.strptime("9999-12-31", '%Y-%m-%d')
-MIN_DATE = datetime.strptime("0001-01-01", '%Y-%m-%d')
+from const import IDX_BIRTH_DATE, IDX_GENDER, PATIENT_ROW_LENGH, MAX_DATE, MIN_DATE
 
 
 """
@@ -65,11 +56,11 @@ class Patient:
 """
 def new_patient(row):
 
-  if not row or len(row) < ROW_LENGH:
+  if not row or len(row) < PATIENT_ROW_LENGH:
     logging.debug("[NEW_PATIENT] Input None or missing values: %r", row)
     return None
 
-  if not ( row[IDX_BIRTH] and row[IDX_GENDER] ):
+  if not ( row[IDX_BIRTH_DATE] and row[IDX_GENDER] ):
     logging.debug("[NEW_PATIENT] Empty fields: %r", row)
     return None
 
@@ -79,7 +70,7 @@ def new_patient(row):
 
   birth_date = None
   try: 
-    birth_date = datetime.strptime(row[IDX_BIRTH], '%Y-%m-%d') 
+    birth_date = datetime.strptime(row[IDX_BIRTH_DATE], '%Y-%m-%d') 
   except Exception as e:
     logging.debug("[NEW_PATIENT] Invalid birthday str: %r", e)
     return None
