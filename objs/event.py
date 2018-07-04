@@ -1,5 +1,7 @@
 import logging
+import json
 from datetime import datetime
+
 
 """
 # constants 
@@ -23,18 +25,33 @@ class Event:
     self.code = code
 
 
+  def to_dict(self):
+    return {
+      "date": self.date.strftime('%Y-%m-%d'),
+      "system": self.system,
+      "code": self.code
+    }
+
+
+  def to_json(self):
+    return json.dumps(self.to_dict())
+
+
+"""
+# Module Methods
+"""
 def new_event(row):
 
-  if len(row) < ROW_LENGH:
-    # missing value
+  if not row or len(row) < ROW_LENGH:
+    logging.debug("[NEW_EVENT] Input None or missing values: %r", row)
     return None
 
   if not (row[IDX_DATE] and row[IDX_VERSION] and row[IDX_CODE]):
-    # empty field
+    logging.debug("[NEW_EVENT] Empty fields: %r", row)
     return None
 
   if row[IDX_VERSION] not in ["9", "10"]:
-    # invalid version number
+    logging.debug("[NEW_EVENT] Invalid version: %r", row)
     return None
 
   system = SYSTEM_9 if row[IDX_VERSION] == "9" else SYSTEM_10
@@ -43,7 +60,7 @@ def new_event(row):
   try: 
     date = datetime.strptime(row[IDX_DATE], '%Y-%m-%d') 
   except Exception as e:
-    logging.debug("Invalid date str: %r", e)
+    logging.debug("[NEW_EVENT] Invalid date string: %r", e)
     return None
   
   return Event(date, system, row[IDX_CODE])
