@@ -2,6 +2,7 @@ import json
 import logging
 from datetime import datetime
 from event import Event
+from lib import calc_years
 
 
 """
@@ -10,6 +11,8 @@ from event import Event
 IDX_BIRTH = 1
 IDX_GENDER = 2
 ROW_LENGH = 3
+MAX_DATE = datetime.strptime("9999-12-31", '%Y-%m-%d')
+MIN_DATE = datetime.strptime("0001-01-01", '%Y-%m-%d')
 
 
 """
@@ -22,12 +25,24 @@ class Patient:
     self.gender = gender
     self.events = []
     self.event_num = 0
+    self.min_event_date = MAX_DATE
+    self.max_event_date = MIN_DATE
 
 
   def add_event(self, event):
     if event and isinstance(event, Event):
       self.events.append(event.to_dict())
+      self.min_event_date = min(self.min_event_date, event.date)
+      self.max_event_date = max(self.max_event_date, event.date)
       self.event_num += 1
+
+
+  def get_timeline_length(self):
+    return (self.max_event_date - self.min_event_date).days
+
+
+  def get_last_visit_age(self):
+    return calc_years(self.birth_date,  self.max_event_date)
 
 
   def is_active(self):
