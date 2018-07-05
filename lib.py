@@ -3,6 +3,9 @@ from datetime import date
 
 
 def get_root_logger(name, numeric_level):
+  """
+  # configure logger
+  """
   logging.basicConfig(format='  %(asctime)s [%(filename)s] %(message)s', level=numeric_level)
   logger = logging.getLogger(name)
   logger.info("Logging level %s",  logging.getLevelName(numeric_level))

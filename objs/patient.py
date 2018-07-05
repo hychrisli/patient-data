@@ -10,6 +10,10 @@ from const import IDX_BIRTH_DATE, IDX_GENDER, PATIENT_ROW_LENGH, MAX_DATE, MIN_D
 # Class
 """
 class Patient:
+  """
+  # Patient class stores birth_date, gender and events info
+  # min_event_date and max_event_date are also included to calculate timeline length and last visit age
+  """
 
   def __init__(self, birth_date, gender):
     self.birth_date = birth_date

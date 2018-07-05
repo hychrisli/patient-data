@@ -8,7 +8,10 @@ from const import IDX_DATE, IDX_VERSION, IDX_CODE, EVENT_ROW_LENGH, SYSTEM_9, SY
 # Event Class
 """
 class Event:
-
+  """
+  # Event class store data, system and code info
+  """
+  
   def __init__(self, date, system, code):
     self.date = date
     self.system = system

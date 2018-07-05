@@ -14,11 +14,17 @@ from const import RESULTS_DIR, EVENT_DATA, PATIENT_DATA
 # Module methods
 """
 def setup():
+  """
+  #  set up the project. Checking and creating results directory
+  """
   if not os.path.exists(RESULTS_DIR):
     os.makedirs(RESULTS_DIR)
 
 
 def gen_patients():
+  """
+  # Read data from file and create patient and event object line by line
+  """
   patients = {}
   
   with open(PATIENT_DATA, 'rb') as f:
@@ -42,6 +48,7 @@ def gen_patients():
       event = new_event(row)
       
       if event and p_id in patients:
+        # if it's a valid event and it has a matching patient
         patients[p_id].add_event(event)
 
   logger.info("Loaded events data")
@@ -50,7 +57,11 @@ def gen_patients():
 
 
 def extract(patients):
-
+  """
+  # loop through patients dictionary
+  # output JSON files for valid patients
+  # calcuate statistics
+  """
   stats = {
     "patients": 0,
     "males": 0,
@@ -95,6 +106,7 @@ def extract(patients):
     f.write(json.dumps(stats, indent=4, sort_keys=True))
 
   logger.info("Wrote statistics to results/stats.json")
+
 
 """
 #  Main
